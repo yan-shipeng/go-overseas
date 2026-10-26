@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Leaderboard · Strategy Simulation</title>
-<meta http-equiv="refresh" content="0; url=https://efb5f7ce148f450da7f6c4c1c7b98647.sg2.agentos-app.run/en/leaderboard" />
 <style>
   html,body{margin:0;height:100%;background:#0a0f0d;color:#8aa;font-family:-apple-system,"Segoe UI",system-ui,sans-serif;
   display:flex;align-items:center;justify-content:center}
@@ -12,7 +11,20 @@
 </style>
 </head>
 <body>
-  <p>Opening the leaderboard… <a href="https://efb5f7ce148f450da7f6c4c1c7b98647.sg2.agentos-app.run/en/leaderboard">Continue</a></p>
-  <script>location.replace('https://efb5f7ce148f450da7f6c4c1c7b98647.sg2.agentos-app.run/en/leaderboard');</script>
+  <p>Opening the leaderboard… <a id="go" href="#">Continue</a></p>
+  <script>
+    (function () {
+      var FALLBACK = 'https://78c543eb7a1547ed8d854be143466ecc.sg2.agentos-app.run/en/leaderboard';
+      function go(url) { location.replace(url); }
+      fetch('../current.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          var u = (j && j.url) ? j.url.replace(/\/+$/, '') + '/leaderboard' : FALLBACK;
+          document.getElementById('go').href = u;
+          go(u);
+        })
+        .catch(function () { document.getElementById('go').href = FALLBACK; go(FALLBACK); });
+    })();
+  </script>
 </body>
 </html>

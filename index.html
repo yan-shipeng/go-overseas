@@ -67,18 +67,38 @@
     <div class="spin"></div>
     <div id="msg">Loading simulation…</div>
     <div id="sub">Waking the game server — this can take a few seconds the first time.</div>
-    <a id="direct" href="https://efb5f7ce148f450da7f6c4c1c7b98647.sg2.agentos-app.run/en" target="_top" rel="noopener">Open it directly →</a>
+    <a id="direct" href="https://78c543eb7a1547ed8d854be143466ecc.sg2.agentos-app.run/en" target="_top" rel="noopener">Open it directly →</a>
     <div id="elapsed"></div>
   </div>
   <iframe
     id="app"
-    src="https://efb5f7ce148f450da7f6c4c1c7b98647.sg2.agentos-app.run/en"
+    src="https://78c543eb7a1547ed8d854be143466ecc.sg2.agentos-app.run/en"
     title="Global Integration Challenge"
     allow="fullscreen"
     referrerpolicy="no-referrer-when-downgrade"
     onload="window.__appLoaded = true; document.getElementById('loading').classList.add('hidden')"
   ></iframe>
   <noscript>This simulation requires JavaScript. Please enable it and reload.</noscript>
+  <script>
+    /* 当前游戏地址从 current.json 读，重新发布后只改那一个文件。 */
+    (function () {
+      var FALLBACK = 'https://78c543eb7a1547ed8d854be143466ecc.sg2.agentos-app.run/en';
+      var frame = document.getElementById('app');
+      var direct = document.getElementById('direct');
+
+      function apply(url) {
+        if (!url || typeof url !== 'string' || url.indexOf('http') !== 0) return;
+        if (frame.getAttribute('src') !== url) frame.src = url;
+        direct.href = url;
+      }
+
+      apply(FALLBACK);
+      fetch('current.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { if (j && j.url) apply(j.url); })
+        .catch(function () {});
+    })();
+  </script>
   <script>
     (function () {
       var t0 = Date.now();
@@ -91,19 +111,10 @@
         if (window.__appLoaded) { clearInterval(tick); return; }
         var s = Math.round((Date.now() - t0) / 1000);
         elapsed.textContent = s + 's';
-        if (s >= 5) { msg.textContent = 'Still loading…'; sub.classList.add('on'); }
+        if (s >= 4) { msg.textContent = 'Still loading…'; sub.classList.add('on'); }
         if (s >= 12) { msg.textContent = 'Taking longer than usual'; direct.classList.add('on'); }
+        if (s >= 25) { msg.textContent = 'The server is still waking up'; direct.classList.add('on'); }
       }, 1000);
-
-      setTimeout(function () {
-        if (window.__appLoaded) return;
-        try {
-          if (!sessionStorage.getItem('gio-retried')) {
-            sessionStorage.setItem('gio-retried', '1');
-            location.reload();
-          }
-        } catch (e) {}
-      }, 20000);
     })();
   </script>
 </body>

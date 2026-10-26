@@ -48,29 +48,63 @@
       animation: sp 0.9s linear infinite;
     }
     @keyframes sp { to { transform: rotate(360deg); } }
+    #sub { font-size: .85rem; color: #6f8b94; text-align: center; max-width: 30rem; line-height: 1.6; display: none; }
+    #sub.on { display: block; }
+    #direct {
+      display: none; margin-top: 6px;
+      padding: 10px 20px; border-radius: 999px;
+      border: 1px solid rgba(13,139,150,.55);
+      color: #6fd8dd; text-decoration: none;
+      font-size: .9rem; letter-spacing: .02em;
+    }
+    #direct.on { display: inline-block; }
+    #elapsed { font-size: .78rem; color: #4d6b77; letter-spacing: .06em; }
     noscript { display: block; padding: 24px; text-align: center; }
   </style>
 </head>
 <body>
   <div id="loading">
     <div class="spin"></div>
-    <div>Loading simulation…</div>
+    <div id="msg">Loading simulation…</div>
+    <div id="sub">Waking the game server — this can take a few seconds the first time.</div>
+    <a id="direct" href="https://32125d7876904a57b652686f4910eeb9.sg2.agentos-app.run/en" target="_top" rel="noopener">Open it directly →</a>
+    <div id="elapsed"></div>
   </div>
   <iframe
     id="app"
-    src="https://190492dc8dc3403da15a497b5fceae7d.sg2.agentos-app.run/en"
+    src="https://32125d7876904a57b652686f4910eeb9.sg2.agentos-app.run/en"
     title="Global Integration Challenge"
     allow="fullscreen"
     referrerpolicy="no-referrer-when-downgrade"
-    onload="document.getElementById('loading').classList.add('hidden')"
+    onload="window.__appLoaded = true; document.getElementById('loading').classList.add('hidden')"
   ></iframe>
   <noscript>This simulation requires JavaScript. Please enable it and reload.</noscript>
   <script>
-    /* Failsafe: never leave the spinner covering a page that actually loaded. */
-    setTimeout(function () {
-      var l = document.getElementById('loading');
-      if (l) l.classList.add('hidden');
-    }, 12000);
+    (function () {
+      var t0 = Date.now();
+      var msg = document.getElementById('msg');
+      var sub = document.getElementById('sub');
+      var direct = document.getElementById('direct');
+      var elapsed = document.getElementById('elapsed');
+
+      var tick = setInterval(function () {
+        if (window.__appLoaded) { clearInterval(tick); return; }
+        var s = Math.round((Date.now() - t0) / 1000);
+        elapsed.textContent = s + 's';
+        if (s >= 5) { msg.textContent = 'Still loading…'; sub.classList.add('on'); }
+        if (s >= 12) { msg.textContent = 'Taking longer than usual'; direct.classList.add('on'); }
+      }, 1000);
+
+      setTimeout(function () {
+        if (window.__appLoaded) return;
+        try {
+          if (!sessionStorage.getItem('gio-retried')) {
+            sessionStorage.setItem('gio-retried', '1');
+            location.reload();
+          }
+        } catch (e) {}
+      }, 20000);
+    })();
   </script>
 </body>
 </html>

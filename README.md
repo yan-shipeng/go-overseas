@@ -1,4 +1,4 @@
-# go-overseas · ESG Transition Simulation（英文版入口）
+# go-overseas · Global Integration Challenge（英文版入口）
 
 线上地址：<https://yan-shipeng.github.io/go-overseas/>
 
@@ -7,12 +7,9 @@
 它**只做一件事**：提供一个英文版入口页，把英文版模拟游戏用一层 iframe 嵌进来。
 
 ```
-https://yan-shipeng.github.io/go-overseas/          ← 本仓库（薄壳，现指向 ESG 版）
-  └─ iframe → https://5f0c8413195b44c8904b1162848d27ed.sg2.agentos-app.run/en   ← ESG 版（当前）
+https://yan-shipeng.github.io/go-overseas/          ← 本仓库（薄壳）
+  └─ iframe → https://60667a9eefcf4805a8405c39528616c6.sg2.agentos-app.run/en   ← 英文版（当前）
 ```
-
-旧版「Global Integration Challenge」入口仍保留在 `legacy-en.html`，指向原来的
-WorkBuddy 部署，可直接访问 `/legacy-en.html`。
 
 ## 指向说明
 
@@ -27,8 +24,7 @@ WorkBuddy 部署，可直接访问 `/legacy-en.html`。
 
 | 站点 | 语言 | 指向 | 依赖 |
 |---|---|---|---|
-| `go-overseas`（`/`） | 英文 | ESG 版 · WorkBuddy Sites 应用 `/en` | 依赖 WorkBuddy 运行时 |
-| `go-overseas`（`/legacy-en.html`） | 英文 | 旧版 Global Integration Challenge | 依赖 WorkBuddy 运行时 |
+| `go-overseas` | 英文 | WorkBuddy Sites 应用 `/en` | 依赖 WorkBuddy 运行时 |
 | `integration` | 中文 | 自包含游戏 + 排行榜 | 仅 GitHub Pages |
 | `go-global` | 中文 | Manus 托管应用 | 依赖 Manus 运行时 |
 

@@ -29,7 +29,6 @@ WorkBuddy 部署，可直接访问 `/legacy-en.html`。
 |---|---|---|---|
 | `go-overseas`（`/`） | 英文 | ESG 版 · WorkBuddy Sites 应用 `/en` | 依赖 WorkBuddy 运行时 |
 | `go-overseas`（`/legacy-en.html`） | 英文 | 旧版 Global Integration Challenge | 依赖 WorkBuddy 运行时 |
-| `esg-simulation` | 英文 | 自包含静态副本（无排行榜，降级为本地计分） | 仅 GitHub Pages |
 | `integration` | 中文 | 自包含游戏 + 排行榜 | 仅 GitHub Pages |
 | `go-global` | 中文 | Manus 托管应用 | 依赖 Manus 运行时 |
 

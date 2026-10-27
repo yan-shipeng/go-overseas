@@ -50,14 +50,13 @@
     @keyframes sp { to { transform: rotate(360deg); } }
     #sub { font-size: .85rem; color: #6f8b94; text-align: center; max-width: 30rem; line-height: 1.6; display: none; }
     #sub.on { display: block; }
-    #direct {
-      display: none; margin-top: 6px;
-      padding: 10px 20px; border-radius: 999px;
-      border: 1px solid rgba(13,139,150,.55);
-      color: #6fd8dd; text-decoration: none;
-      font-size: .9rem; letter-spacing: .02em;
+    /* 慢的时候只给一个 Reload，不暴露真正的部署地址 */
+    #sub a {
+      display: inline-block; margin-top: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      border: 1px solid rgba(13,139,150,.5);
+      color: #6fd8dd; text-decoration: none; font-size: .82rem;
     }
-    #direct.on { display: inline-block; }
     #elapsed { font-size: .78rem; color: #4d6b77; letter-spacing: .06em; }
     noscript { display: block; padding: 24px; text-align: center; }
   </style>
@@ -66,13 +65,13 @@
   <div id="loading">
     <div class="spin"></div>
     <div id="msg">Loading simulation…</div>
-    <div id="sub">Waking the game server — this can take a few seconds the first time.</div>
-    <a id="direct" href="https://1a4b398d987444269b2593c3f2724477.sg2.agentos-app.run/en" target="_top" rel="noopener">Open it directly →</a>
+    <div id="sub">Waking the game server — the first load can take up to a minute.
+      <br><a href="./">Reload</a></div>
     <div id="elapsed"></div>
   </div>
   <iframe
     id="app"
-    src="https://1a4b398d987444269b2593c3f2724477.sg2.agentos-app.run/en"
+    src="https://03f94908fd544c06a463a2e5f6320244.sg2.agentos-app.run/en"
     title="Global Integration Challenge"
     allow="fullscreen"
     referrerpolicy="no-referrer-when-downgrade"
@@ -82,14 +81,12 @@
   <script>
     /* 当前游戏地址从 current.json 读，重新发布后只改那一个文件。 */
     (function () {
-      var FALLBACK = 'https://1a4b398d987444269b2593c3f2724477.sg2.agentos-app.run/en';
+      var FALLBACK = 'https://03f94908fd544c06a463a2e5f6320244.sg2.agentos-app.run/en';
       var frame = document.getElementById('app');
-      var direct = document.getElementById('direct');
 
       function apply(url) {
         if (!url || typeof url !== 'string' || url.indexOf('http') !== 0) return;
         if (frame.getAttribute('src') !== url) frame.src = url;
-        direct.href = url;
       }
 
       apply(FALLBACK);
@@ -104,16 +101,15 @@
       var t0 = Date.now();
       var msg = document.getElementById('msg');
       var sub = document.getElementById('sub');
-      var direct = document.getElementById('direct');
       var elapsed = document.getElementById('elapsed');
 
+      /* 只数秒，不自动刷新、也不给直链。头 10 秒纯等待，10 秒后才放出 Reload。 */
       var tick = setInterval(function () {
         if (window.__appLoaded) { clearInterval(tick); return; }
         var s = Math.round((Date.now() - t0) / 1000);
         elapsed.textContent = s + 's';
-        if (s >= 4) { msg.textContent = 'Still loading…'; sub.classList.add('on'); }
-        if (s >= 12) { msg.textContent = 'Taking longer than usual'; direct.classList.add('on'); }
-        if (s >= 25) { msg.textContent = 'The server is still waking up'; direct.classList.add('on'); }
+        if (s >= 10 && s < 30) { msg.textContent = 'Still loading…'; sub.classList.add('on'); }
+        if (s >= 30) { msg.textContent = 'The server is still waking up'; sub.classList.add('on'); }
       }, 1000);
     })();
   </script>

@@ -14,7 +14,7 @@
   <p>Opening the leaderboard… <a id="go" href="#">Continue</a></p>
   <script>
     (function () {
-      var FALLBACK = 'https://a38ce4f671f549b88e59db228d537b00.sg2.agentos-app.run/en/leaderboard';
+      var FALLBACK = 'https://3e2f79b2103b41ed8813ff9fd1d17341.sg2.agentos-app.run/en/leaderboard';
       function go(url) { location.replace(url); }
       fetch('../current.json?t=' + Date.now(), { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; })

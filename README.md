@@ -2,6 +2,15 @@
 
 线上地址：<https://yan-shipeng.github.io/go-overseas/>
 
+## 固定约定（不要改）
+
+> **这个链接永远是「战略执行」排名。**
+> `https://yan-shipeng.github.io/go-overseas/` → 原版 Global Integration Challenge，
+> 排行榜只读 `game.db` 的 `en_sessions`（courseKey = `strategy`）。
+> 不要把它指向 ESG 版，也不要把 ESG 的成绩灌进这个库。
+>
+> 对应地：`https://yan-shipeng.github.io/esg-simulation/` 永远是 ESG 排名，只读 `esg.db`。
+
 ## 这个仓库做什么
 
 它**只做一件事**：提供一个英文版入口页，把英文版模拟游戏用一层 iframe 嵌进来。

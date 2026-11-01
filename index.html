@@ -90,9 +90,24 @@
       }
 
       apply(FALLBACK);
+      /* 先探一下 current.json 给的地址还活着没有：GitHub Pages 的 CDN 有时会
+         缓存旧的 current.json，把学生带到已经下线的旧域名（白屏 / 400）。
+         探不通就继续用写死的 FALLBACK，别整页跳进死链。 */
+      function probe(url, ok) {
+        var done = false, img = new Image();
+        var t = setTimeout(function () { if (!done) { done = true; img.src = ''; } }, 7000);
+        img.onload = function () { if (done) return; done = true; clearTimeout(t); ok(); };
+        img.onerror = function () { if (done) return; done = true; clearTimeout(t); };
+        img.src = url.replace(/\/+$/, '') + '/favicon.ico?t=' + Date.now();
+      }
+
       fetch('current.json?t=' + Date.now(), { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (j) { if (j && j.url) apply(j.url); })
+        .then(function (j) {
+          if (!j || !j.url) return;
+          if (j.url === FALLBACK) return;
+          probe(j.url, function () { apply(j.url); });
+        })
         .catch(function () {});
     })();
   </script>

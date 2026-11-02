@@ -17,7 +17,7 @@
 
 ```
 https://yan-shipeng.github.io/go-overseas/          ← 本仓库（薄壳）
-  └─ iframe → https://719bb1b26c7a49d28bc707ed33490171.sg2.agentos-app.run/en   ← 英文版（当前）
+  └─ iframe → https://71b345f6713a4fd98e7c3a31cf17c72e.sg2.agentos-app.run/en   ← 英文版（当前）
 ```
 
 ## 指向说明
